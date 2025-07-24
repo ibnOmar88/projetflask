@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">   -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Mon site</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse  justify-content-end" id="navbarSupportedContent">
+      <ul class="navbar-nav mb-2 mb-lg-0 nav-pills">
+        <li class="nav-item">
+          <a class="nav-link {%if title=='Acceuil' %} active  {%endif%}" aria-current="page" href="/">Acceuil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {%if title=='propos' %} active  {%endif%}" href="/propos">Propos</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            formation
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item {%if title=='Programmation' %} activa  {%endif%}" href="/programmationWeb">Programmation web</a></li>
+            <li><a class="dropdown-item {%if title=='Reseau' %} active  {%endif%}" href="/reseauInformatique">Reseau informatique</a></li>
+            
+            <li><a class="dropdown-item {%if title=='Maintenance' %} active  {%endif%}" href="/maintenance">Maintenance</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {%if title=='Contact' %} active  {%endif%} "  href="/contact">Contact</a>
+        </li>
+
+        {% if session['user_id']%}
+         <li class="nav-item">
+          <a class="nav-link  "  href="/sedeconnecter">Se deconnecter</a>
+          
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link {%if title=='bord' %} active  {%endif%} "  href="/tableauBord">Tableau de bord</a>
+        </li>
+        {% else %}
+         <li class="nav-item">
+          <a class="nav-link  "  href="/login">Se connecter</a>
+        </li>
+        {%endif%}
+      </ul>
+     
+    </div>
+  </div>
+</nav>  
+    </header>

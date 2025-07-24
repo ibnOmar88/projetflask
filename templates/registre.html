@@ -1,0 +1,41 @@
+    
+{% include 'header.html'%}
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<main>
+
+     <form method="POST"  class="border w-50 mt-5 mx-auto p-5">
+        <h2 class="text-primary text-center my-5">Inscription</h2>
+        <div class="my-3">
+            <input type="text" name="nom" id="" class="form-control" placeholder="Enter your name">
+        </div>
+        <div class="my-3">
+            <input type="email" name="email" id="" class="form-control" placeholder="Exemple@gmail.com">
+        </div>
+       <div class="my-3">
+         <input type="password" name="password" id="" class="form-control" placeholder="enter your password">
+       </div>
+        <div class="my-3">
+         <input type="password" name="password2" id="" class="form-control" placeholder="re-enter your password">
+       </div>
+
+
+       <div class="my-3">
+        <input type="submit" value="s'incrire" class="btn btn-primary">
+        <input type="reset" value="Effacer" class="btn btn-danger">
+       </div>
+    </form>
+    
+</main>
+
+
+{% include 'footer.html'%}
