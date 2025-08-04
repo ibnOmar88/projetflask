@@ -1,35 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, flash,session
-# import sqlite3
-from flask_sqlalchemy import SQLAlchemy
-
-
-app= Flask(__name__)
-
-
-
-
-# configuration
-
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+mysqlconnector://root:@localhost/flaskdb'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-
-app.secret_key="secret_key"
-
-
-database=SQLAlchemy(app)
-
-
-
-# definition model
-
-
-class User(database.Model):
-    id= database.Column(database.Integer , primary_key=True, autoincrement=True)
-    nom=database.Column(database.String(50), nullable=False)
-    email=database.Column(database.String(100), nullable=False)
-    password= database.Column(database.String(100), nullable=True)
-
-
+from model import *
 # def database():
 #     # creation + connection
 #     conn=sqlite3.connect('CFAT.db')
@@ -153,7 +122,59 @@ def tableauBord():
         
     return render_template('tableauBord.html', users=users)
 
+
+
+
+@app.route('/modifier/<int:id>', methods=['POST', 'GET'])
+def modifier(id):
+    user= User.query.get_or_404(id)
+    
+    
+    if request.method=='POST':
+        nom= request.form['nom']
+        email= request.form['email']
+        password=request.form['password']
+        
+        user.nom=nom
+        user.email=email
+        user.password=password
+        
+        database.session.commit()
+        return redirect(url_for('tableauBord'))
+    
+    
+    return render_template('modifier.html', title='modifier', user=user)
+
+
+
+@app.route('/delete/<int:id>', methods=['POST', 'GET'])
+def delete(id):
+    user= User.query.get_or_404(id)
+    
+    
+    if user:
+        database.session.delete(user)
+        database.session.commit()
+        return redirect(url_for('tableauBord'))
+    
+    
+    return render_template('tableauBord.html', title='modifier', user=user)
+
+
+
+@app.route('/carte',  methods=["POST", "GET"])
+def carte():
+     if request.method=='POST':
+        Numero= request.form['Numero']
+        IdUser= request.form['idUser']
+        
+        carte= CarteIdentite(NumeroID=Numero,user_id=IdUser)
+        database.session.add(carte)
+        database.session.commit()
+    
+     return redirect(url_for('tableauBord'))
+
 if __name__=="__main__":
     with app.app_context():
         database.create_all()
-    app.run(debug=True)
+    app.run(debug=True, port=3000)
