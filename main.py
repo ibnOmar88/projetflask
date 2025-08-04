@@ -174,6 +174,38 @@ def carte():
     
      return redirect(url_for('tableauBord'))
 
+
+
+
+
+
+
+
+# --------------------------------------Article -----------------------------------
+@app.route('/Article')
+def Article():
+    
+    # articles= Article.query.all()
+    
+    
+    return render_template('Article.html', title='Article')
+
+
+
+@app.route('/addArticle', methods=["POST", "GET"])
+def AddArticle():
+    
+    if request.method=='POST':
+        titre= request.form['titre']
+        contenu= request.form['contenu']
+        id_user=session['user_id']
+       
+        article= Article(titre=titre, contenu=contenu, user_id=id_user)
+        database.session.add(article)
+        database.session.commit()
+            
+    return render_template('addArticle.html', title='registre')
+
 if __name__=="__main__":
     with app.app_context():
         database.create_all()

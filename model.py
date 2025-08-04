@@ -31,6 +31,8 @@ class User(database.Model):
     password= database.Column(database.String(100), nullable=True)
     # relation one to one 
     carteIdentite=database.relationship('CarteIdentite', backref='Proprietaire', uselist=False)
+    # relation one to many
+    articles=database.relationship('Article', backref='Auteur')
 
 
 class CarteIdentite(database.Model):
@@ -38,3 +40,12 @@ class CarteIdentite(database.Model):
     id= database.Column(database.Integer , primary_key=True, autoincrement=True)
     NumeroID=database.Column(database.String(100))
     user_id=database.Column(database.Integer, database.ForeignKey('Users.id'), unique=True)
+
+
+
+class Article(database.Model):
+    id= database.Column(database.Integer , primary_key=True, autoincrement=True)
+    titre= database.Column(database.String(50))
+    contenu= database.Column(database.Text)
+    user_id= database.Column(database.Integer, database.ForeignKey('Users.id'))
+    

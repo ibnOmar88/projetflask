@@ -1,0 +1,40 @@
+    
+{% include 'header.html'%}
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<main>
+
+     <form method="POST"  class="border w-50 mt-5 mx-auto p-5">
+        <h2 class="text-primary text-center my-5">Ajouter un Article</h2>
+        <div class="my-3">
+            <input type="text" name="titre" id="" class="form-control" placeholder="Enter your title">
+        </div>
+        <div class="my-3">
+            <textarea  id="" name="contenu" rows="20" cols="80" placeholder="contenu"></textarea>
+            <!-- <input type="text"    id="" class="form-control" placeholder="Exemple@gmail.com"> -->
+        </div>
+       <!-- <div class="my-3">
+         <input type="text" name="id_user" disabled="disabled" class="form-control" value="{{session['user_id']}}" >
+       </div> -->
+       
+
+
+       <div class="my-3">
+        <input type="submit" value="Ajouter un Article" class="btn btn-primary">
+        <input type="reset" value="Effacer" class="btn btn-danger">
+       </div>
+    </form>
+    
+</main>
+
+
+{% include 'footer.html'%}
