@@ -1,6 +1,15 @@
 
     
 {% include 'header.html'%}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
 
 
@@ -8,13 +17,18 @@
 
   <div class="row w-50 mx-auto">
     <div class=" col  w-50 ">
-        <a href="#exampleModal" class="btn btn-primary w-50 " data-bs-toggle="modal">Ajouter</a>
+        <a href="#exampleModal" class="btn btn-primary w-100" data-bs-toggle="modal">Ajouter un user</a>
     </div>
 
    <div class="col">
-     <a href="/addArticle" class="btn btn-primary w-50 " >Ajouter un article</a>
+     <a href="/addArticle" class="btn btn-primary w-100 " >Ajouter un article</a>
    </div>
-
+  <div class="col">
+      <a href="#exampleModal2" class="btn btn-primary w-100 " data-bs-toggle="modal" >Ajouter un cours</a>
+    </div>
+      <div class="col">
+      <a href="#exampleModal3" class="btn btn-primary w-100 " data-bs-toggle="modal" >S'incrire un cours</a>
+    </div>
   </div>
     
 
@@ -26,6 +40,7 @@
         <td>Email</td>
          <td>password</td>
           <td>carte</td>
+           <td>cours</td>
          <td>Action</td>
     </tr>
     {% for user in users %}
@@ -40,7 +55,11 @@
                 {% else %}
                 <td><a href="#exampleModal1" class="btn btn-primary  " data-bs-toggle="modal" data-user-id="{{user['id']}}">creer une carte</a></td>
                 {%endif%}
-            
+            <td>
+              <ul>
+                <li></li>
+              </ul>
+            </td>
            
             <td>
               <a class="btn btn-success" href="/modifier/{{user['id']}}">Modifier</a>
@@ -140,6 +159,82 @@
         
        
         <input type="submit" value="Creer" class="btn btn-primary">
+        <input type="reset" value="Effacer" class="btn btn-danger">
+       
+     
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Modal cours -->
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Ajouter un cours</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="/addcourse" class=" w-100">
+        
+        <div class="my-3">
+            <input type="text" name="matier" id="" class="form-control" placeholder="ajouter un cours">
+        </div>
+   
+      </div>
+      <div class="modal-footer">
+        
+       
+        <input type="submit" value="Ajouter" class="btn btn-primary">
+        <input type="reset" value="Effacer" class="btn btn-danger">
+       
+     
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Modal inscription-->
+
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">S'inscrire un cours</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="/inscriptionCours" class=" w-100">
+        
+        <div class="my-3">
+            <input type="number" name="id_user" id="" class="form-control" placeholder="ajouter un user">
+        </div>
+         <div class="my-3">
+            <input type="number" name="id_cours" id="" class="form-control" placeholder="ajouter un cours">
+        </div>
+   
+      </div>
+      <div class="modal-footer">
+        
+       
+        <input type="submit" value="Ajouter" class="btn btn-primary">
         <input type="reset" value="Effacer" class="btn btn-danger">
        
      

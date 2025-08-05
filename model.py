@@ -1,6 +1,7 @@
-from flask import Flask, render_template, url_for, request, redirect, flash,session
+from flask import Flask
 # import sqlite3
 from flask_sqlalchemy import SQLAlchemy
+# from waitress import serve
 
 
 app= Flask(__name__)
@@ -48,4 +49,13 @@ class Article(database.Model):
     titre= database.Column(database.String(50))
     contenu= database.Column(database.Text)
     user_id= database.Column(database.Integer, database.ForeignKey('Users.id'))
-    
+
+
+class cours(database.Model):
+    id= database.Column(database.Integer , primary_key=True, autoincrement=True)
+    matier=database.Column(database.String(255))
+
+inscriptions=database.Table('inscriptions',
+                           database.Column('user_id', database.Integer, database.ForeignKey('Users.id')),
+                           database.Column('cours_id', database.Integer, database.ForeignKey('cours.id'))
+                           )

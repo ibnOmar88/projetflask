@@ -6,9 +6,20 @@
 
 
 <main>
+     {%if articles%}
 
+        {% for article in articles%}
 
-  
+            <h2> {{article.titre}}</h2> 
+            <p>
+                {{article.contenu}}
+            </p>
+
+        {%endfor%}
+    {% else %}
+      <p>Aucun article trouvé.</p>
+    {% endif %}
+
     
 </main>
 

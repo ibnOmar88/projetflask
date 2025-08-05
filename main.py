@@ -1,6 +1,7 @@
-from model import *
+from flask import Flask, render_template, url_for, request, redirect, flash,session
+from model import Article, User, CarteIdentite, app, database, cours, inscriptions
 # def database():
-#     # creation + connection
+#     # creation + connectionx  
 #     conn=sqlite3.connect('CFAT.db')
     
 #     # requete sql pour la creation d'une table
@@ -181,14 +182,16 @@ def carte():
 
 
 
+
+
 # --------------------------------------Article -----------------------------------
 @app.route('/Article')
-def Article():
+def Article_page():
     
-    # articles= Article.query.all()
+    articles= Article.query.all()
     
     
-    return render_template('Article.html', title='Article')
+    return render_template('Article.html', title='Article', articles=articles)
 
 
 
@@ -206,7 +209,55 @@ def AddArticle():
             
     return render_template('addArticle.html', title='registre')
 
+
+
+
+
+
+# ------------------------------------cours----------------------------------------
+
+
+
+@app.route('/addcourse', methods=['GET', 'POST'])
+def addcourse():
+    if request.method=='POST':
+        matiere=request.form['matier']
+        
+        cour=cours(matier=matiere)
+        database.session.add(cour)
+        database.session.commit()
+        if cour:
+            flash('vous avez un ajouter un cours','success')
+    return redirect(url_for('tableauBord'))
+
+
+
+@app.route('/inscriptionCours', methods=['GET', 'POST'])
+def inscrirecourse():
+    if request.method=='POST':
+        id_user=request.form['id_user']
+        id_cours=request.form['id_cours']
+        
+        user=User.query.get(id_user)
+        cour=cours.query.get(id_cours)
+        
+        # inscription
+        # inscrire=user.inscriptions.append(cour)
+        
+        inscrire=inscriptions(user_id=id_user,cours_id=id_cours)
+        database.session.add(inscrire)
+        database.session.commit()
+        if inscrire:
+            flash('vous fais une inscriptions','success')
+    return redirect(url_for('tableauBord'))
+
+
+
+
+
+
 if __name__=="__main__":
     with app.app_context():
         database.create_all()
+    # serve(app, host="0.0.0.0", port=8000)
     app.run(debug=True, port=3000)
