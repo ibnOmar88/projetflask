@@ -24,6 +24,11 @@ database=SQLAlchemy(app)
 # definition model
 
 
+inscriptions=database.Table('inscriptions',
+                           database.Column('user_id', database.Integer, database.ForeignKey('Users.id')),
+                           database.Column('cours_id', database.Integer, database.ForeignKey('cours.id'))
+                           )
+
 class User(database.Model):
     __tablename__="Users"
     id= database.Column(database.Integer , primary_key=True, autoincrement=True)
@@ -34,6 +39,8 @@ class User(database.Model):
     carteIdentite=database.relationship('CarteIdentite', backref='Proprietaire', uselist=False)
     # relation one to many
     articles=database.relationship('Article', backref='Auteur')
+    # relation many to many
+    matiere = database.relationship('Cours', secondary=inscriptions, backref='etudiants')
 
 
 class CarteIdentite(database.Model):
@@ -51,11 +58,6 @@ class Article(database.Model):
     user_id= database.Column(database.Integer, database.ForeignKey('Users.id'))
 
 
-class cours(database.Model):
+class Cours(database.Model):
     id= database.Column(database.Integer , primary_key=True, autoincrement=True)
-    matier=database.Column(database.String(255))
-
-inscriptions=database.Table('inscriptions',
-                           database.Column('user_id', database.Integer, database.ForeignKey('Users.id')),
-                           database.Column('cours_id', database.Integer, database.ForeignKey('cours.id'))
-                           )
+    libelle_cours=database.Column(database.String(255))

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request, redirect, flash,session
-from model import Article, User, CarteIdentite, app, database, cours, inscriptions
+from model import Article, User, CarteIdentite, app, database, Cours, inscriptions
 # def database():
 #     # creation + connectionx  
 #     conn=sqlite3.connect('CFAT.db')
@@ -118,7 +118,14 @@ def tableauBord():
         return redirect(url_for('login'))
 
     else:
-        users=User.query.all()
+        try:
+            
+            users=User.query.all()
+        except:
+            flash('probleme de base donné ou table')
+            if 'user_id' in session:
+                session.clear()
+            return redirect(url_for('index'))
     
         
     return render_template('tableauBord.html', users=users)
@@ -223,7 +230,7 @@ def addcourse():
     if request.method=='POST':
         matiere=request.form['matier']
         
-        cour=cours(matier=matiere)
+        cour=Cours(libelle_cours=matiere)
         database.session.add(cour)
         database.session.commit()
         if cour:
@@ -232,24 +239,7 @@ def addcourse():
 
 
 
-@app.route('/inscriptionCours', methods=['GET', 'POST'])
-def inscrirecourse():
-    if request.method=='POST':
-        id_user=request.form['id_user']
-        id_cours=request.form['id_cours']
-        
-        user=User.query.get(id_user)
-        cour=cours.query.get(id_cours)
-        
-        # inscription
-        # inscrire=user.inscriptions.append(cour)
-        
-        inscrire=inscriptions(user_id=id_user,cours_id=id_cours)
-        database.session.add(inscrire)
-        database.session.commit()
-        if inscrire:
-            flash('vous fais une inscriptions','success')
-    return redirect(url_for('tableauBord'))
+
 
 
 
